@@ -191,6 +191,88 @@ export class MimeTypeContentProvider implements vscode.NotebookContentProvider {
                             ]),
                         ]
                     },
+                    // custom renderer
+                    {
+                        // application/geo+json
+                        cellKind: vscode.CellKind.Code,
+                        language: 'python',
+                        metadata: {},
+                        source: [
+                            "def GeoJSON(data={}, metadata={}):\r\n",
+                            "    bundle = {\r\n",
+                            "            'application/geo+json': data,\r\n",
+                            "            'text/plain': '<IPython.display.GeoJSON object>'\r\n",
+                            "    }\r\n",
+                            "    metadata = {\r\n",
+                            "        'application/geo+json': metadata\r\n",
+                            "    }\r\n",
+                            "    display(bundle, metadata=metadata, raw=True)\r\n",
+                            "\r\n",
+                            "GeoJSON({\r\n",
+                            "    \"type\": \"Feature\",\r\n",
+                            "    \"geometry\": {\r\n",
+                            "        \"type\": \"Point\",\r\n",
+                            "        \"coordinates\": [-117.4563712, 35.0163116]\r\n",
+                            "    }\r\n",
+                            "})"
+                           ].join(''),
+                        outputs: [
+                            new vscode.NotebookCellOutput([
+                                new vscode.NotebookCellOutputItem('application/geo+json', {
+                                    "geometry": {
+                                     "coordinates": [
+                                      -117.4563712,
+                                      35.0163116
+                                     ],
+                                     "type": "Point"
+                                    },
+                                    "type": "Feature"
+                                }),
+                                new vscode.NotebookCellOutputItem('text/plain', "<IPython.display.GeoJSON object>")
+                            ]),
+                        ]
+                    },
+                    // metadata change
+                    {
+                        // application/geo+json
+                        cellKind: vscode.CellKind.Code,
+                        language: 'python',
+                        metadata: {},
+                        source: [
+                            "def GeoJSON(data={}, metadata={}):\r\n",
+                            "    bundle = {\r\n",
+                            "            'application/geo+json': data,\r\n",
+                            "            'text/plain': '<IPython.display.GeoJSON object>'\r\n",
+                            "    }\r\n",
+                            "    metadata = {\r\n",
+                            "        'application/geo+json': metadata\r\n",
+                            "    }\r\n",
+                            "    display(bundle, metadata=metadata, raw=True)\r\n",
+                            "\r\n",
+                            "GeoJSON({\r\n",
+                            "    \"type\": \"Feature\",\r\n",
+                            "    \"geometry\": {\r\n",
+                            "        \"type\": \"Point\",\r\n",
+                            "        \"coordinates\": [-117.4563712, 35.0163116]\r\n",
+                            "    }\r\n",
+                            "})"
+                           ].join(''),
+                        outputs: [
+                            new vscode.NotebookCellOutput([
+                                new vscode.NotebookCellOutputItem('application/geo+json', {
+                                    "geometry": {
+                                     "coordinates": [
+                                      -117.4563712,
+                                      35.0163116
+                                     ],
+                                     "type": "Point"
+                                    },
+                                    "type": "Feature"
+                                }, { "background": "#333"}),
+                                new vscode.NotebookCellOutputItem('text/plain', "<IPython.display.GeoJSON object>")
+                            ]),
+                        ]
+                    }
                 ]
             };
         }
@@ -377,6 +459,87 @@ export class MimeTypeContentProvider implements vscode.NotebookContentProvider {
                         ]),
                     ]
                 },
+                {
+                    // application/geo+json
+                    cellKind: vscode.CellKind.Code,
+                    language: 'python',
+                    metadata: {},
+                    source: [
+                        "def GeoJSON(data={}, metadata={}):\r\n",
+                        "    bundle = {\r\n",
+                        "            'application/geo+json': data,\r\n",
+                        "            'text/plain': '<IPython.display.GeoJSON object>'\r\n",
+                        "    }\r\n",
+                        "    metadata = {\r\n",
+                        "        'application/geo+json': metadata\r\n",
+                        "    }\r\n",
+                        "    display(bundle, metadata=metadata, raw=True)\r\n",
+                        "\r\n",
+                        "GeoJSON({\r\n",
+                        "    \"type\": \"Feature\",\r\n",
+                        "    \"geometry\": {\r\n",
+                        "        \"type\": \"Point\",\r\n",
+                        "        \"coordinates\": [-118.4563712, 34.0163116]\r\n",
+                        "    }\r\n",
+                        "})"
+                       ].join(''),
+                    outputs: [
+                        new vscode.NotebookCellOutput([
+                            new vscode.NotebookCellOutputItem('application/geo+json', {
+                                "geometry": {
+                                 "coordinates": [
+                                  -118.4563712,
+                                  34.0163116
+                                 ],
+                                 "type": "Point"
+                                },
+                                "type": "Feature"
+                            }),
+                            new vscode.NotebookCellOutputItem('text/plain', "<IPython.display.GeoJSON object>")
+                        ]),
+                    ]
+                },
+                // metadata change
+                {
+                    // application/geo+json
+                    cellKind: vscode.CellKind.Code,
+                    language: 'python',
+                    metadata: {},
+                    source: [
+                        "def GeoJSON(data={}, metadata={}):\r\n",
+                        "    bundle = {\r\n",
+                        "            'application/geo+json': data,\r\n",
+                        "            'text/plain': '<IPython.display.GeoJSON object>'\r\n",
+                        "    }\r\n",
+                        "    metadata = {\r\n",
+                        "        'application/geo+json': metadata\r\n",
+                        "    }\r\n",
+                        "    display(bundle, metadata=metadata, raw=True)\r\n",
+                        "\r\n",
+                        "GeoJSON({\r\n",
+                        "    \"type\": \"Feature\",\r\n",
+                        "    \"geometry\": {\r\n",
+                        "        \"type\": \"Point\",\r\n",
+                        "        \"coordinates\": [-117.4563712, 35.0163116]\r\n",
+                        "    }\r\n",
+                        "})"
+                       ].join(''),
+                    outputs: [
+                        new vscode.NotebookCellOutput([
+                            new vscode.NotebookCellOutputItem('application/geo+json', {
+                                "geometry": {
+                                 "coordinates": [
+                                  -117.4563712,
+                                  35.0163116
+                                 ],
+                                 "type": "Point"
+                                },
+                                "type": "Feature"
+                            }, { "background": "#fff"}),
+                            new vscode.NotebookCellOutputItem('text/plain', "<IPython.display.GeoJSON object>")
+                        ]),
+                    ]
+                }
             ]
         };
     }
