@@ -1081,11 +1081,13 @@ declare module 'vscode' {
 		readonly cellKind: CellKind;
 		readonly document: TextDocument;
 		readonly language: string;
+		readonly outputs: readonly NotebookCellOutput[];
+		readonly metadata: NotebookCellMetadata;
 		/** @deprecated use WorkspaceEdit.replaceCellOutput */
-		outputs: CellOutput[];
+		// outputs: CellOutput[];
 		// readonly outputs2: NotebookCellOutput[];
 		/** @deprecated use WorkspaceEdit.replaceCellMetadata */
-		metadata: NotebookCellMetadata;
+		// metadata: NotebookCellMetadata;
 	}
 
 	export interface NotebookDocumentMetadata {
@@ -1166,10 +1168,15 @@ declare module 'vscode' {
 		readonly isUntitled: boolean;
 		readonly cells: ReadonlyArray<NotebookCell>;
 		readonly contentOptions: NotebookDocumentContentOptions;
+		// todo@API
+		// make readonly
+		// languages comes from the kernel
 		languages: string[];
-		metadata: NotebookDocumentMetadata;
+		readonly metadata: NotebookDocumentMetadata;
 	}
 
+	// todo@API maybe have a NotebookCellPosition sibling
+	// todo@API should be a class
 	export interface NotebookCellRange {
 		readonly start: number;
 		/**
@@ -1241,18 +1248,6 @@ declare module 'vscode' {
 		readonly onDidDispose: Event<void>;
 	}
 
-	// todo@API stale?
-	export interface NotebookOutputSelector {
-		mimeTypes?: string[];
-	}
-
-	// todo@API stale?
-	export interface NotebookRenderRequest {
-		output: CellDisplayOutput;
-		mimeType: string;
-		outputId: string;
-	}
-
 	export interface NotebookDocumentMetadataChangeEvent {
 		readonly document: NotebookDocument;
 	}
@@ -1271,17 +1266,6 @@ declare module 'vscode' {
 		 */
 		readonly document: NotebookDocument;
 		readonly changes: ReadonlyArray<NotebookCellsChangeData>;
-	}
-
-	// todo@API stale?
-	export interface NotebookCellMoveEvent {
-
-		/**
-		 * The affected document.
-		 */
-		readonly document: NotebookDocument;
-		readonly index: number;
-		readonly newIndex: number;
 	}
 
 	export interface NotebookCellOutputsChangeEvent {
@@ -1326,7 +1310,7 @@ declare module 'vscode' {
 		readonly source: string;
 		readonly language: string;
 		// todo@API maybe use a separate data type?
-		readonly outputs: CellOutput[];
+		readonly outputs: NotebookCellOutput[];
 		readonly metadata: NotebookCellMetadata | undefined;
 	}
 
@@ -1416,67 +1400,15 @@ declare module 'vscode' {
 
 	//#region https://github.com/microsoft/vscode/issues/106744, NotebookCellOutput
 
-	export enum CellOutputKind {
-		Text = 1,
-		Error = 2,
-		Rich = 3
-	}
-
-	export interface CellStreamOutput {
-		outputKind: CellOutputKind.Text;
-		text: string;
-	}
-
-	export interface CellErrorOutput {
-		outputKind: CellOutputKind.Error;
-		/**
-		 * Exception Name
-		 */
-		ename: string;
-		/**
-		 * Exception Value
-		 */
-		evalue: string;
-		/**
-		 * Exception call stack
-		 */
-		traceback: string[];
-	}
-
-	export interface NotebookCellOutputMetadata {
-		/**
-		 * Additional attributes of a cell metadata.
-		 */
-		custom?: { [key: string]: any; };
-	}
-
-	export interface CellDisplayOutput {
-		outputKind: CellOutputKind.Rich;
-		/**
-		 * { mime_type: value }
-		 *
-		 * Example:
-		 * ```json
-		 * {
-		 *   "outputKind": vscode.CellOutputKind.Rich,
-		 *   "data": {
-		 *      "text/html": [
-		 *          "<h1>Hello</h1>"
-		 *       ],
-		 *      "text/plain": [
-		 *        "<IPython.lib.display.IFrame at 0x11dee3e80>"
-		 *      ]
-		 *   }
-		 * }
-		 */
-		data: { [key: string]: any; };
-
-		readonly metadata?: NotebookCellOutputMetadata;
-	}
-
-	export type CellOutput = CellStreamOutput | CellErrorOutput | CellDisplayOutput;
-
+	// code specific mime types
+	// application/x.notebook.error-traceback
+	// application/x.notebook.stream
 	export class NotebookCellOutputItem {
+
+		// todo@API
+		// add factory functions for common mime types
+		// static textplain(value:string): NotebookCellOutputItem;
+		// static errortrace(value:any): NotebookCellOutputItem;
 
 		readonly mime: string;
 		readonly value: unknown;
@@ -1488,14 +1420,9 @@ declare module 'vscode' {
 	// @jrieken
 	//TODO@API add execution count to cell output?
 	export class NotebookCellOutput {
-
 		readonly id: string;
 		readonly outputs: NotebookCellOutputItem[];
-
 		constructor(outputs: NotebookCellOutputItem[]);
-
-		//TODO@jrieken HACK to workaround dependency issues...
-		toJSON(): any;
 	}
 
 	//#endregion
@@ -1504,22 +1431,24 @@ declare module 'vscode' {
 
 	export interface WorkspaceEdit {
 		replaceNotebookMetadata(uri: Uri, value: NotebookDocumentMetadata): void;
+
+		// todo@API use NotebookCellRange
 		replaceNotebookCells(uri: Uri, start: number, end: number, cells: NotebookCellData[], metadata?: WorkspaceEditEntryMetadata): void;
 		replaceNotebookCellMetadata(uri: Uri, index: number, cellMetadata: NotebookCellMetadata, metadata?: WorkspaceEditEntryMetadata): void;
 
-		replaceNotebookCellOutput(uri: Uri, index: number, outputs: (NotebookCellOutput | CellOutput)[], metadata?: WorkspaceEditEntryMetadata): void;
-		appendNotebookCellOutput(uri: Uri, index: number, outputs: (NotebookCellOutput | CellOutput)[], metadata?: WorkspaceEditEntryMetadata): void;
+		replaceNotebookCellOutput(uri: Uri, index: number, outputs: NotebookCellOutput[], metadata?: WorkspaceEditEntryMetadata): void;
+		appendNotebookCellOutput(uri: Uri, index: number, outputs: NotebookCellOutput[], metadata?: WorkspaceEditEntryMetadata): void;
 
 		// TODO@api
 		// https://jupyter-protocol.readthedocs.io/en/latest/messaging.html#update-display-data
-		// replaceNotebookCellOutput(uri: Uri, index: number, outputId:string, outputs: NotebookCellOutputItem[], metadata?: WorkspaceEditEntryMetadata): void;
-		// appendNotebookCellOutput(uri: Uri, index: number, outputId:string, outputs: NotebookCellOutputItem[], metadata?: WorkspaceEditEntryMetadata): void;
+		replaceNotebookCellOutputItems(uri: Uri, index: number, outputId: string, items: NotebookCellOutputItem[], metadata?: WorkspaceEditEntryMetadata): void;
+		appendNotebookCellOutputItems(uri: Uri, index: number, outputId: string, items: NotebookCellOutputItem[], metadata?: WorkspaceEditEntryMetadata): void;
 	}
 
 	export interface NotebookEditorEdit {
 		replaceMetadata(value: NotebookDocumentMetadata): void;
 		replaceCells(start: number, end: number, cells: NotebookCellData[]): void;
-		replaceCellOutput(index: number, outputs: (NotebookCellOutput | CellOutput)[]): void;
+		replaceCellOutput(index: number, outputs: NotebookCellOutput[]): void;
 		replaceCellMetadata(index: number, metadata: NotebookCellMetadata): void;
 	}
 
