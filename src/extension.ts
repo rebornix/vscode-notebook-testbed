@@ -3,21 +3,33 @@ import { MimeTypeContentProvider } from './mimeTypeNotebook';
 
 export function activate(context: vscode.ExtensionContext) {
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
 	console.log('Congratulations, your extension "vscode-notebook-testbed" is now active!');
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('vscode-notebook-testbed.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
+	let _counter = 0;
+	context.subscriptions.push(vscode.commands.registerCommand('testbed.streamoutput', async () => {
+		if (vscode.window.activeNotebookEditor) {
+			const editor = vscode.window.activeNotebookEditor;
+			const document = editor.document;
+			const activeCell = editor.selection;
 
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from vscode-notebook-testbed!');
-	});
+			if (activeCell) {
+				const edit = new vscode.WorkspaceEdit();
 
-	context.subscriptions.push(disposable);
+				if (activeCell.outputs.length && activeCell.outputs.find(op => !!op.outputs.find(opit => opit.mime === 'application/x.notebook.stream'))) {
+					const output = activeCell.outputs.find(op => !!op.outputs.find(opit => opit.mime === 'application/x.notebook.stream'))
+					edit.appendNotebookCellOutputItems(document.uri, activeCell.index, output!.id, [
+						new vscode.NotebookCellOutputItem('application/x.notebook.stream', _counter++)
+					]);
+				} else {
+					edit.appendNotebookCellOutput(document.uri, activeCell.index, [
+						new vscode.NotebookCellOutput([new vscode.NotebookCellOutputItem('application/x.notebook.stream', _counter++)])
+					])
+				}
+
+				await vscode.workspace.applyEdit(edit);
+			}
+		}
+	}));
 
 	context.subscriptions.push(vscode.notebook.registerNotebookContentProvider('mimetype-test', new MimeTypeContentProvider()));
 }

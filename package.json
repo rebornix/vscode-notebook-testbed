@@ -10,11 +10,18 @@
 		"Other"
 	],
 	"activationEvents": [
-        "onNotebook:mimetype-test"
+        "onNotebook:mimetype-test",
+		"onCommand:testbed.streamoutput"
 	],
 	"main": "./out/extension.js",
 	"enableProposedApi": true,
 	"contributes": {
+		"commands": [
+			{
+				"command": "testbed.streamoutput",
+				"title": "NB Test: Stream Output"
+			}
+		],
 		"notebookProvider": [
 			{
 				"viewType": "mimetype-test",
