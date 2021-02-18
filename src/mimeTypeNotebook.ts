@@ -588,3 +588,36 @@ export class MimeTypeContentProvider implements vscode.NotebookContentProvider {
     }
 
 }
+
+class Kernel implements vscode.NotebookKernel {
+    id = 'mimetype_test-kernel';
+    label: string = 'Mimetype Test Kernel'
+    supportedLanguages: string[] = ['javascript', 'typescript'];
+
+    executeCell(document: vscode.NotebookDocument, cell: vscode.NotebookCell): void {
+        throw new Error('Method not implemented.');
+    }
+
+    cancelCellExecution(document: vscode.NotebookDocument, cell: vscode.NotebookCell): void {
+        throw new Error('Method not implemented.');
+    }
+
+    executeAllCells(document: vscode.NotebookDocument): void {
+        throw new Error('Method not implemented.');
+    }
+
+    cancelAllCellsExecution(document: vscode.NotebookDocument): void {
+        throw new Error('Method not implemented.');
+    }
+}
+
+export class MimeTypeKernelProvider implements vscode.NotebookKernelProvider {
+    private _kernels: vscode.NotebookKernel[];
+    constructor() {
+        this._kernels = [new Kernel()];
+    }
+    // onDidChangeKernels?: vscode.Event<vscode.NotebookDocument | undefined> | undefined;
+    provideKernels(document: vscode.NotebookDocument, token: vscode.CancellationToken): vscode.ProviderResult<vscode.NotebookKernel[]> {
+        return this._kernels;
+    }
+}

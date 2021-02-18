@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { MimeTypeContentProvider } from './mimeTypeNotebook';
+import { MimeTypeContentProvider, MimeTypeKernelProvider } from './mimeTypeNotebook';
 
 export function activate(context: vscode.ExtensionContext) {
 
@@ -33,7 +33,8 @@ export function activate(context: vscode.ExtensionContext) {
 	}));
 
 	context.subscriptions.push(vscode.notebook.registerNotebookContentProvider('mimetype-test', new MimeTypeContentProvider()));
-}
+	context.subscriptions.push(vscode.notebook.registerNotebookKernelProvider({ viewType: 'mimetype-test' }, new MimeTypeKernelProvider()));
+ }
 
 // this method is called when your extension is deactivated
 export function deactivate() {}
