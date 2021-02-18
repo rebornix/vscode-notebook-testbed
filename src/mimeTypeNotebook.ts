@@ -7,12 +7,12 @@ export class MimeTypeContentProvider implements vscode.NotebookContentProvider {
     openNotebook(uri: vscode.Uri, openContext: vscode.NotebookDocumentOpenContext): vscode.NotebookData {
         if (uri.scheme === 'git') {
             return {
-                metadata: {},
-                languages: ['*'],
+                metadata: {
+                },
                 cells: [
                     // simple mimtype
                     {
-                        cellKind: vscode.CellKind.Code,
+                        cellKind: vscode.NotebookCellKind.Code,
                         language: 'javascript',
                         metadata: {},
                         source: 'console.log(1);\nconsole.log(2);\n',
@@ -24,7 +24,7 @@ export class MimeTypeContentProvider implements vscode.NotebookContentProvider {
                         ]
                     },
                     {
-                        cellKind: vscode.CellKind.Code,
+                        cellKind: vscode.NotebookCellKind.Code,
                         language: 'javascript',
                         metadata: {},
                         source: ['console.error("");', 'console.error2("");'].join('\n'),
@@ -48,7 +48,7 @@ export class MimeTypeContentProvider implements vscode.NotebookContentProvider {
                         ]
                     },
                     {
-                        cellKind: vscode.CellKind.Code,
+                        cellKind: vscode.NotebookCellKind.Code,
                         language: 'javascript',
                         metadata: {},
                         source: 'console.text(1);\nconsole.text(2);\n',
@@ -60,7 +60,7 @@ export class MimeTypeContentProvider implements vscode.NotebookContentProvider {
                         ]
                     },
                     {
-                        cellKind: vscode.CellKind.Code,
+                        cellKind: vscode.NotebookCellKind.Code,
                         language: 'javascript',
                         metadata: {},
                         source: ['markdown("# header 1");', 'markdown("## header ");'].join('\n'),
@@ -72,7 +72,7 @@ export class MimeTypeContentProvider implements vscode.NotebookContentProvider {
                         ]
                     },
                     {
-                        cellKind: vscode.CellKind.Code,
+                        cellKind: vscode.NotebookCellKind.Code,
                         language: 'javascript',
                         metadata: {},
                         source: ['json({"a": 1});', 'json({"b": 2})'].join('\n'),
@@ -84,7 +84,7 @@ export class MimeTypeContentProvider implements vscode.NotebookContentProvider {
                         ]
                     },
                     {
-                        cellKind: vscode.CellKind.Code,
+                        cellKind: vscode.NotebookCellKind.Code,
                         language: 'javascript',
                         metadata: {},
                         source: ['html("<h1>html header 1</h1>");', 'html("<h2>html header 2</h2>'].join('\n'),
@@ -96,7 +96,7 @@ export class MimeTypeContentProvider implements vscode.NotebookContentProvider {
                         ]
                     },
                     {
-                        cellKind: vscode.CellKind.Code,
+                        cellKind: vscode.NotebookCellKind.Code,
                         language: 'javascript',
                         metadata: {},
                         source: ['png'].join('\n'),
@@ -108,7 +108,7 @@ export class MimeTypeContentProvider implements vscode.NotebookContentProvider {
                         ]
                     },
                     {
-                        cellKind: vscode.CellKind.Code,
+                        cellKind: vscode.NotebookCellKind.Code,
                         language: 'javascript',
                         metadata: {},
                         source: ['svg red', 'svg blue'].join('\n'),
@@ -133,7 +133,7 @@ export class MimeTypeContentProvider implements vscode.NotebookContentProvider {
                     },
                     // mixed mimetype
                     {
-                        cellKind: vscode.CellKind.Code,
+                        cellKind: vscode.NotebookCellKind.Code,
                         language: 'javascript',
                         metadata: {},
                         source: 'mix text and error',
@@ -151,7 +151,7 @@ export class MimeTypeContentProvider implements vscode.NotebookContentProvider {
                         ]
                     },
                     {
-                        cellKind: vscode.CellKind.Code,
+                        cellKind: vscode.NotebookCellKind.Code,
                         language: 'javascript',
                         metadata: {},
                         source: 'mix png and html',
@@ -164,7 +164,7 @@ export class MimeTypeContentProvider implements vscode.NotebookContentProvider {
                     },
                     // multiple outputs
                     {
-                        cellKind: vscode.CellKind.Code,
+                        cellKind: vscode.NotebookCellKind.Code,
                         language: 'javascript',
                         metadata: {},
                         source: 'mix text and error',
@@ -194,7 +194,7 @@ export class MimeTypeContentProvider implements vscode.NotebookContentProvider {
                     // custom renderer
                     {
                         // application/geo+json
-                        cellKind: vscode.CellKind.Code,
+                        cellKind: vscode.NotebookCellKind.Code,
                         language: 'python',
                         metadata: {},
                         source: [
@@ -235,7 +235,7 @@ export class MimeTypeContentProvider implements vscode.NotebookContentProvider {
                     // metadata change
                     {
                         // application/geo+json
-                        cellKind: vscode.CellKind.Code,
+                        cellKind: vscode.NotebookCellKind.Code,
                         language: 'python',
                         metadata: {},
                         source: [
@@ -279,10 +279,9 @@ export class MimeTypeContentProvider implements vscode.NotebookContentProvider {
 
         return {
             metadata: {},
-            languages: ['*'],
             cells: [
                 {
-                    cellKind: vscode.CellKind.Code,
+                    cellKind: vscode.NotebookCellKind.Code,
                     language: 'javascript',
                     metadata: {},
                     source: 'console.log(1);\nconsole.log(3);\n',
@@ -294,7 +293,7 @@ export class MimeTypeContentProvider implements vscode.NotebookContentProvider {
                     ]
                 },
                 {
-                    cellKind: vscode.CellKind.Code,
+                    cellKind: vscode.NotebookCellKind.Code,
                     language: 'javascript',
                     metadata: {},
                     source: ['console.error("");', 'console.error3("");'].join('\n'),
@@ -306,19 +305,12 @@ export class MimeTypeContentProvider implements vscode.NotebookContentProvider {
                                 traceback: [
                                     'console.error'
                                 ]
-                            }),
-                            new vscode.NotebookCellOutputItem('application/x.notebook.error-traceback', {
-                                ename: 'error2 not defined',
-                                evalue: 'console.error3 not defined',
-                                traceback: [
-                                    'console.error3'
-                                ]
-                            }),
+                            })
                         ])
                     ]
                 },
                 {
-                    cellKind: vscode.CellKind.Code,
+                    cellKind: vscode.NotebookCellKind.Code,
                     language: 'javascript',
                     metadata: {},
                     source: 'console.text(1);\nconsole.text(3);\n',
@@ -330,7 +322,7 @@ export class MimeTypeContentProvider implements vscode.NotebookContentProvider {
                     ]
                 },
                 {
-                    cellKind: vscode.CellKind.Code,
+                    cellKind: vscode.NotebookCellKind.Code,
                     language: 'javascript',
                     metadata: {},
                     source: ['markdown("# header 1");', 'markdown("### header 3");'].join('\n'),
@@ -342,7 +334,7 @@ export class MimeTypeContentProvider implements vscode.NotebookContentProvider {
                     ]
                 },
                 {
-                    cellKind: vscode.CellKind.Code,
+                    cellKind: vscode.NotebookCellKind.Code,
                     language: 'javascript',
                     metadata: {},
                     source: ['json({"a": 1});', 'json({"b": 3})'].join('\n'),
@@ -354,7 +346,7 @@ export class MimeTypeContentProvider implements vscode.NotebookContentProvider {
                     ]
                 },
                 {
-                    cellKind: vscode.CellKind.Code,
+                    cellKind: vscode.NotebookCellKind.Code,
                     language: 'javascript',
                     metadata: {},
                     source: ['html("<h1>html header 1</h1>");', 'html("<h3>html header 3</h3>'].join('\n'),
@@ -366,7 +358,7 @@ export class MimeTypeContentProvider implements vscode.NotebookContentProvider {
                     ]
                 },
                 {
-                    cellKind: vscode.CellKind.Code,
+                    cellKind: vscode.NotebookCellKind.Code,
                     language: 'javascript',
                     metadata: {},
                     source: ['png2'].join('\n'),
@@ -378,7 +370,7 @@ export class MimeTypeContentProvider implements vscode.NotebookContentProvider {
                     ]
                 },
                 {
-                    cellKind: vscode.CellKind.Code,
+                    cellKind: vscode.NotebookCellKind.Code,
                     language: 'javascript',
                     metadata: {},
                     source: ['svg red', 'svg orange'].join('\n'),
@@ -402,7 +394,7 @@ export class MimeTypeContentProvider implements vscode.NotebookContentProvider {
                     ]
                 },
                 {
-                    cellKind: vscode.CellKind.Code,
+                    cellKind: vscode.NotebookCellKind.Code,
                     language: 'javascript',
                     metadata: {},
                     source: 'mix text and error',
@@ -420,11 +412,21 @@ export class MimeTypeContentProvider implements vscode.NotebookContentProvider {
                     ]
                 },
                 {
-                    cellKind: vscode.CellKind.Code,
+                    cellKind: vscode.NotebookCellKind.Code,
                     language: 'javascript',
                     metadata: {},
                     source: 'mix png and html',
                     outputs: [
+                        /**
+                         * {
+                         *  "cellKind": Text
+                         *  "text": ""
+                         * }
+                         * {
+                         *  "cellKind": Rich
+                         *  "data": ""
+                         * }
+                         */
                         new vscode.NotebookCellOutput([
                             new vscode.NotebookCellOutputItem('text/html', "<h2>html header 2</h2>"),
                             new vscode.NotebookCellOutputItem('image/png', `R0lGODdhMAAwAPAAAAAAAP///ywAAAAAMAAwAAAC8IyPqcvt3wCcDkiLc7C0qwyGHhSWpjQu5yqmCYsapyuvUUlvONmOZtfzgFzByTB10QgxOR0TqBQejhRNzOfkVJ+5YiUqrXF5Y5lKh/DeuNcP5yLWGsEbtLiOSpa/TPg7JpJHxyendzWTBfX0cxOnKPjgBzi4diinWGdkF8kjdfnycQZXZeYGejmJlZeGl9i2icVqaNVailT6F5iJ90m6mvuTS4OK05M0vDk0Q4XUtwvKOzrcd3iq9uisF81M1OIcR7lEewwcLp7tuNNkM3uNna3F2JQFo97Vriy/Xl4/f1cf5VWzXyym7PHhhx4dbgYKAAA7`),
@@ -432,7 +434,7 @@ export class MimeTypeContentProvider implements vscode.NotebookContentProvider {
                     ]
                 },
                 {
-                    cellKind: vscode.CellKind.Code,
+                    cellKind: vscode.NotebookCellKind.Code,
                     language: 'javascript',
                     metadata: {},
                     source: 'mix text and error',
@@ -461,7 +463,7 @@ export class MimeTypeContentProvider implements vscode.NotebookContentProvider {
                 },
                 {
                     // application/geo+json
-                    cellKind: vscode.CellKind.Code,
+                    cellKind: vscode.NotebookCellKind.Code,
                     language: 'python',
                     metadata: {},
                     source: [
@@ -502,7 +504,7 @@ export class MimeTypeContentProvider implements vscode.NotebookContentProvider {
                 // metadata change
                 {
                     // application/geo+json
-                    cellKind: vscode.CellKind.Code,
+                    cellKind: vscode.NotebookCellKind.Code,
                     language: 'python',
                     metadata: {},
                     source: [
@@ -537,6 +539,28 @@ export class MimeTypeContentProvider implements vscode.NotebookContentProvider {
                                 "type": "Feature"
                             }, { "background": "#fff"}),
                             new vscode.NotebookCellOutputItem('text/plain', "<IPython.display.GeoJSON object>")
+                        ]),
+                    ]
+                },
+                // bug report, multiple stream items with ansi
+                {
+                    // application/geo+json
+                    cellKind: vscode.NotebookCellKind.Code,
+                    language: 'python',
+                    metadata: {},
+                    source: [
+                        "a",
+                        "\u001b[A",
+                        "b"
+                       ].join(''),
+                    outputs: [
+                        new vscode.NotebookCellOutput([
+                            new vscode.NotebookCellOutputItem('application/x.notebook.stream', [
+                                "Line1\n",
+                                "\n",
+                                "\u001b[ALine3\n",
+                                "Line4"
+                               ].join('')),
                         ]),
                     ]
                 }
