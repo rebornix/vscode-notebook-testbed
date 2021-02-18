@@ -5,6 +5,10 @@ export function activate(context: vscode.ExtensionContext) {
 
 	console.log('Congratulations, your extension "vscode-notebook-testbed" is now active!');
 
+	context.subscriptions.push(vscode.commands.registerCommand('testbed.print', async () => {
+		console.log(vscode.window.activeNotebookEditor);
+	}));
+
 	let _counter = 0;
 
 	context.subscriptions.push(vscode.commands.registerCommand('testbed.streamoutput', async () => {

@@ -12,7 +12,7 @@
 	"activationEvents": [
         "onNotebook:mimetype-test",
 		"onCommand:testbed.streamoutput",
-		"onCommand:testbed.changecelllanguage"
+		"onCommand:testbed.print"
 	],
 	"main": "./out/extension.js",
 	"enableProposedApi": true,
@@ -23,8 +23,8 @@
 				"title": "NB Test: Stream Output"
 			},
 			{
-				"command": "testbed.changecelllanguage",
-				"title": "NB Test: Change cell type"
+				"command": "testbed.print",
+				"title": "NB Test: Print"
 			}
 		],
 		"notebookProvider": [
