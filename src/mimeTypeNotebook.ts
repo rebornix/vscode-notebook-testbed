@@ -5,9 +5,11 @@ export class MimeTypeContentProvider implements vscode.NotebookContentProvider {
     // options?: vscode.NotebookDocumentContentOptions | undefined;
     // onDidChangeNotebookContentOptions?: vscode.Event<vscode.NotebookDocumentContentOptions> | undefined;
     openNotebook(uri: vscode.Uri, openContext: vscode.NotebookDocumentOpenContext): vscode.NotebookData {
+        const metadata = new vscode.NotebookDocumentMetadata();
+        
         if (uri.scheme === 'git') {
             return {
-                metadata: new vscode.NotebookDocumentMetadata(),
+                metadata: metadata.with({ trusted: true }),
                 cells: [
                     // simple mimtype
                     {
@@ -277,12 +279,12 @@ export class MimeTypeContentProvider implements vscode.NotebookContentProvider {
         }
 
         return {
-            metadata: new vscode.NotebookDocumentMetadata(),
+            metadata: metadata.with({ trusted: true, editable: false }),
             cells: [
                 {
                     cellKind: vscode.NotebookCellKind.Code,
                     language: 'javascript',
-                    metadata: new vscode.NotebookCellMetadata(),
+                    metadata: (new vscode.NotebookCellMetadata()).with({ editable: false }),
                     source: 'console.log(1);\nconsole.log(3);\n',
                     outputs: [
                         new vscode.NotebookCellOutput([
@@ -302,7 +304,10 @@ export class MimeTypeContentProvider implements vscode.NotebookContentProvider {
                                 ename: 'error not defined',
                                 evalue: 'console.error not defined',
                                 traceback: [
-                                    'console.error'
+                                    "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
+                                    "\u001b[0;31mNameError\u001b[0m                                 Traceback (most recent call last)",
+                                    "\u001b[0;32m<ipython-input-1-f270cadddfe4>\u001b[0m in \u001b[0;36m<module>\u001b[0;34m\u001b[0m\n\u001b[0;32m----> 1\u001b[0;31m \u001b[0mprint\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0ma\u001b[0m \u001b[0;34m+\u001b[0m \u001b[0;36m4\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m",
+                                    "\u001b[0;31mNameError\u001b[0m: name 'a' is not defined"
                                 ]
                             })
                         ])
@@ -561,6 +566,9 @@ export class MimeTypeContentProvider implements vscode.NotebookContentProvider {
                                 "Line4"
                                ].join('')),
                         ]),
+                        new vscode.NotebookCellOutput([
+                            new vscode.NotebookCellOutputItem('text/markdown2', '## header 2'),
+                        ])
                     ]
                 }
             ]

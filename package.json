@@ -37,6 +37,16 @@
 					}
 				]
 			}
+		],
+		"notebookOutputRenderer": [
+			{
+				"id": "mimetyperenderer",
+				"displayName": "Mimtype Renderer",
+				"mimeTypes": [
+					"text/markdown"
+				],
+				"entrypoint": "./renderer/index.js"
+			}
 		]
 	},
 	"scripts": {
